@@ -22,11 +22,25 @@
 
 ## Screens
 
+
 ### Home Screen
+
 ![Home Screen](https://github.com/swapnilandhare/SilentYou/blob/master/home_screen.jpg)
 
+
+
+
+
 ### Maps Screen
+
 ![Home Screen](https://github.com/swapnilandhare/SilentYou/blob/master/empty_maps.jpg)
 
+
+
+
+
 ### Geofence Maps Screen
+
+* After Adding Geofences
+
 ![Home Screen](https://github.com/swapnilandhare/SilentYou/blob/master/geofence_maps.jpg)
