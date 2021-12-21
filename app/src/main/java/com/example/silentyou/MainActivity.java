@@ -22,6 +22,7 @@ import android.location.Geocoder;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.renderscript.Long3;
 import android.util.Log;
 import android.view.View;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addGeofence();
+                addText();
             }
         });
         removeGeofence.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void addGeofence() {
+    void addText()
+    {
         arrayList = latLngList.getArrayList();
         if (arrayList==null) {
             Toast.makeText(this, "ArrayList is Empty", Toast.LENGTH_LONG).show();
@@ -154,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+    }
+    void addGeofence() {
+        arrayList = latLngList.getArrayList();
 
         //Add Geofences
         GeofencingRequest geofencingRequest = geofenceHelper.getGeofencingRequest(arrayList);

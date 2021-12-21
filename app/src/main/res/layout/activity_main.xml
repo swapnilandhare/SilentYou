@@ -10,19 +10,23 @@
         android:id="@+id/addLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="28dp"
         android:text="Add Location"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:padding="10dp"
         android:text=""
+        android:textColor="@color/teal_200"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,30 +39,38 @@
         android:text="Add Geofence"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.689" />
+        app:layout_constraintVertical_bias="0.899" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:padding="10dp"
         android:text=""
+        android:textColor="@color/teal_200"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:padding="10dp"
         android:text=""
+        android:textColor="@color/teal_200"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -69,10 +81,10 @@
         android:text="Remove Geofences"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addGeofence"
-        app:layout_constraintVertical_bias="0.279" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
