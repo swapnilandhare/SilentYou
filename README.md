@@ -7,7 +7,7 @@
 
 * You simply need to provide the geographical locations where you would like to keep your mobile into silent mode. Rest will be taken care of by this app. It will     not forget to go in silent mode the moment it will enter the set radius of geo location.
 
-* SilentMe app will automatically silent user's mobile device on selected Locations. The user can select a location with the use of Google Maps 
+* SilentYou app will automatically silent user's mobile device on selected Locations. The user can select a location with the use of Google Maps 
 
 ## Libraries
 * GooglePlayServicesLocation
