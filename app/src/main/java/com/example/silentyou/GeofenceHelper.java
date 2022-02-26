@@ -29,19 +29,22 @@ public class GeofenceHelper extends ContextWrapper {
 
     public GeofencingRequest getGeofencingRequest(ArrayList<LatLng> latLngArrayList) {
         geofenceList=new ArrayList<>();
+        int i=0;
+        String id="MyGeofence";
         for(LatLng latLng:latLngArrayList)
         {
-            geofenceList.add(getGeofence(latLng));
+            geofenceList.add(getGeofence(latLng,id+i));
+            i++;
         }
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(geofenceList);
         return builder.build();
     }
-    public Geofence getGeofence(LatLng latLng) {
+    public Geofence getGeofence(LatLng latLng,String geofenceID) {
         return new Geofence.Builder()
                 .setCircularRegion(latLng.latitude, latLng.longitude, 50)
-                .setRequestId("My Geofence")
+                .setRequestId(geofenceID)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL | Geofence.GEOFENCE_TRANSITION_EXIT)
                 .setLoiteringDelay(5000)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)

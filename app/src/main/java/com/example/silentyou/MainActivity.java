@@ -16,10 +16,12 @@ import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +47,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.security.Permission;
@@ -54,9 +57,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Button addLocation, addGeofence,removeGeofence;
+    Button addLocation, addGeofence, removeGeofence;
     LatLngList latLngList;
     Geocoder geocoder;
+
+    public static final String MYPREFERENCES = "myPref";
 
     private GeofenceHelper geofenceHelper;
     private GeofencingClient geofencingClient;
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private final int FINE_LOCATION_ACCESS_REQUEST_CODE = 10001;
     private final int BACKGROUND_LOCATION_ACCESS_REQUEST_CODE = 10002;
     private final float radius = 25;
+    private int DELAY = 1500; // Delay time in milliseconds
 
     ArrayList<LatLng> arrayList;
 
@@ -84,10 +90,12 @@ public class MainActivity extends AppCompatActivity {
         textView2 = findViewById(R.id.textView2);
         addLocation = findViewById(R.id.addLocation);
         addGeofence = findViewById(R.id.addGeofence);
-        removeGeofence=findViewById(R.id.removeGeofence);
+        removeGeofence = findViewById(R.id.removeGeofence);
 
         geocoder = new Geocoder(this);
         latLngList = new LatLngList(this);
+
+        checkLocations();
 
         addLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +107,34 @@ public class MainActivity extends AppCompatActivity {
         addGeofence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addGeofence();
-                addText();
+                arrayList = latLngList.getArrayList();
+                if(arrayList != null)
+                {
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            //TODO your background code
+                            addGeofence(arrayList);
+                        }
+                    });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //change UI elements here
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addText(arrayList);
+                                }
+                            }, DELAY);
+                        }
+                    });
+                    save(arrayList);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Please add some location",Toast.LENGTH_LONG).show();
+                }
             }
         });
         removeGeofence.setOnClickListener(new View.OnClickListener() {
@@ -111,56 +145,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void addText()
-    {
-        arrayList = latLngList.getArrayList();
-        if (arrayList==null) {
-            Toast.makeText(this, "ArrayList is Empty", Toast.LENGTH_LONG).show();
-            return;
-        }
-        try {
-            List<Address> addressList;
-            LatLng ltlg = arrayList.get(0);
-            Address address;
-            addressList = geocoder.getFromLocation(ltlg.latitude, ltlg.longitude, 1);
-            address = addressList.get(0);
-            String addressLine = address.getAddressLine(0);
-            textView.setText(addressLine);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(arrayList.size()==2)
+    void addText(ArrayList<LatLng> arrayList){
+        int n=arrayList.size();
+        ArrayList<String> addList=new ArrayList<>();
+        List<Address> addressList;
+        Address address;
+        for(LatLng latLng:arrayList)
         {
             try {
-                List<Address> addressList;
-                LatLng ltlg = arrayList.get(1);
-                Address address;
-                addressList = geocoder.getFromLocation(ltlg.latitude, ltlg.longitude, 1);
+                addressList = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                 address = addressList.get(0);
                 String addressLine = address.getAddressLine(0);
-                textView2.setText(addressLine);
+                addList.add(addressLine);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(arrayList.size()==3)
-        {
-            try {
-                List<Address> addressList;
-                LatLng ltlg = arrayList.get(2);
-                Address address;
-                addressList = geocoder.getFromLocation(ltlg.latitude, ltlg.longitude, 1);
-                address = addressList.get(0);
-                String addressLine = address.getAddressLine(0);
-                textView3.setText(addressLine);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        if(n>0)
+            textView.setText(addList.get(0));
+        if(n>1)
+            textView2.setText(addList.get(1));
+        if(n>2)
+            textView3.setText(addList.get(2));
     }
-    void addGeofence() {
-        arrayList = latLngList.getArrayList();
+
+    void addGeofence(ArrayList<LatLng> arrayList) {
 
         //Add Geofences
         GeofencingRequest geofencingRequest = geofenceHelper.getGeofencingRequest(arrayList);
@@ -191,8 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    void setPermission()
-    {
+    void setPermission() {
         NotificationManager notificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -206,14 +214,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-    void remove()
-    {
+
+    void remove() {
         geofencingClient.removeGeofences(geofenceHelper.getPendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Geofences removed
                         Log.d(TAG, "onSuccess: REMOVED");
+                        Toast.makeText(getApplicationContext(),"ALL GEOFENCES REMOVED",Toast.LENGTH_LONG).show();
                         // ...
                     }
                 })
@@ -224,9 +233,48 @@ public class MainActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+        SharedPreferences preferences = getSharedPreferences(MYPREFERENCES, 0);
+        preferences.edit().clear().commit();
         textView.setText("");
         textView2.setText("");
         textView3.setText("");
-        Toast.makeText(this,"Geofences Removed",Toast.LENGTH_LONG);
+        Toast.makeText(this, "Geofences Removed", Toast.LENGTH_LONG);
+    }
+
+    void save(ArrayList<LatLng> arrayList) {
+        String name = "Obj";
+        int i = 1;
+        SharedPreferences sharedPreferences = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+        Gson gson = new Gson();
+        for (LatLng latLng : arrayList) {
+            String json = gson.toJson(latLng);
+            myEdit.putString(name + i, json);
+            myEdit.commit();
+            i++;
+        }
+
+}
+    void checkLocations()
+    {
+        ArrayList<LatLng> arrayList=new ArrayList<>();
+        String name = "Obj";
+        int i = 1;
+        SharedPreferences sharedPreferences = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
+        int n=sharedPreferences.getAll().size();
+        Gson gson = new Gson();
+        for(int j=0;j<n;j++)
+        {
+            String json = sharedPreferences.getString(name+i, "");
+            LatLng obj = gson.fromJson(json, LatLng.class);
+            arrayList.add(obj);
+            i++;
+        }
+        if(n>0)
+        {
+            addText(arrayList);
+            addGeofence(arrayList);
+        }
+
     }
 }
