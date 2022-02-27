@@ -235,9 +235,9 @@ public class MainActivity extends AppCompatActivity {
                 });
         SharedPreferences preferences = getSharedPreferences(MYPREFERENCES, 0);
         preferences.edit().clear().commit();
-        textView.setText("");
-        textView2.setText("");
-        textView3.setText("");
+        textView.setText("Location-1 Display's here");
+        textView2.setText("Location-2 Display's here");
+        textView3.setText("Location-3 Display's here");
         Toast.makeText(this, "Geofences Removed", Toast.LENGTH_LONG);
     }
 

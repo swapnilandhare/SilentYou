@@ -18,13 +18,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:background="#95CDD5"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:padding="10dp"
-        android:text=""
-        android:textColor="@color/teal_200"
+        android:text="Location-1 Display's here"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,12 +47,13 @@
 
     <TextView
         android:id="@+id/textView2"
+        android:background="#95CDD5"
+        android:text="Location-2 Display's here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:padding="10dp"
-        android:text=""
-        android:textColor="@color/teal_200"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,12 +63,13 @@
 
     <TextView
         android:id="@+id/textView3"
+        android:background="#95CDD5"
+        android:text="Location-3 Display's here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:padding="10dp"
-        android:text=""
-        android:textColor="@color/teal_200"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

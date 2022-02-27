@@ -93,8 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng pune = new LatLng(18.4061, 75.1916);
-        mMap.addMarker(new MarkerOptions().position(pune).title("PUCSD"));
+        LatLng pune = new LatLng(18.522283151857657, 73.84094025939704);
+        mMap.addMarker(new MarkerOptions().position(pune).title("FC ROAD"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pune, 20));
         enableUserLocation();
         mMap.setOnMapLongClickListener(this);
